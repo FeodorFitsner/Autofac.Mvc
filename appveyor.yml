@@ -33,9 +33,8 @@ build_script:
   - pwsh: .\build.ps1
 
 artifacts:
-  - path: artifacts/packages/**/*.*nupkg
+  - path: artifacts\packages\**\*.*nupkg
     name: MyGet
-    type: NuGetPackage
 
 deploy:
   - provider: NuGet
