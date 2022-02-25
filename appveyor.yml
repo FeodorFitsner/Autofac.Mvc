@@ -1,4 +1,4 @@
-image: Visual Studio 2019
+image: Visual Studio 2022
 
 version: "6.0.0.{build}"
 
@@ -37,10 +37,10 @@ artifacts:
     name: MyGet
     type: NuGetPackage
 
-deploy:
-  - provider: NuGet
-    server: https://www.myget.org/F/autofac/api/v2/package
-    symbol_server: https://www.myget.org/F/autofac/api/v2/package
-    api_key:
-      secure: xUXExgVAagrdEicCjSxsQVrwiLo2TtnfqMbYB9Cauq2cpbm/EVz957PBK0v/GEYq
-    artifact: MyGet
+# deploy:
+#   - provider: NuGet
+#     server: https://www.myget.org/F/autofac/api/v2/package
+#     symbol_server: https://www.myget.org/F/autofac/api/v2/package
+#     api_key:
+#       secure: xUXExgVAagrdEicCjSxsQVrwiLo2TtnfqMbYB9Cauq2cpbm/EVz957PBK0v/GEYq
+#     artifact: MyGet
