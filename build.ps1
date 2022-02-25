@@ -57,9 +57,26 @@ try {
 
     if ($env:CI -eq "true") {
         # Generate Coverage Report
+        Write-Message "Downloading and verifying Codecov Uploader"
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri https://keybase.io/codecovsecurity/pgp_keys.asc -OutFile codecov.asc 
+        gpg.exe --import codecov.asc
+        Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe -Outfile codecov.exe
+        Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe.SHA256SUM -Outfile codecov.exe.SHA256SUM
+        Invoke-WebRequest -Uri https://uploader.codecov.io/latest/windows/codecov.exe.SHA256SUM.sig -Outfile codecov.exe.SHA256SUM.sig
+        gpg.exe --verify codecov.exe.SHA256SUM.sig codecov.exe.SHA256SUM
+        if ($(Compare-Object -ReferenceObject  $(($(certUtil -hashfile codecov.exe SHA256)[1], "codecov.exe") -join "  ") -DifferenceObject $(Get-Content codecov.exe.SHA256SUM)).length -eq 0)
+        {
+          Write-Message "Uploader hash verified"
+        }
+        else
+        {
+          Write-Message "Uploader failed hash validation"
+          Exit 1
+        }
+
         Write-Message "Generating Codecov Report"
-        Invoke-WebRequest -Uri 'https://codecov.io/bash' -OutFile codecov.sh
-        & bash codecov.sh -f "artifacts/coverage/*/coverage*.info"
+        & ./codecov.exe -f "artifacts/coverage/*/coverage*.info"
     }
 
     # Finished
