@@ -30,7 +30,7 @@ clone_depth: 1
 test: false
 
 build_script:
-  - pwsh .\build.ps1
+  - build.cmd
 
 artifacts:
   - path: artifacts\packages\**\*.*nupkg
